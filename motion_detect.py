@@ -10,15 +10,17 @@ from picamera2.encoders import H264Encoder
 from picamera2.outputs import CircularOutput
 
 load_dotenv()
-os.getenv('NAS_PATH')
+os.getenv("NAS_PATH")
 
 time_format = "%Y-%m-%d-%H-%M-%S"
 frame_rate = 30
 
 lsize = (320, 240)
 picam2 = Picamera2()
-video_config = picam2.create_video_configuration(main={"size": (1920, 1080), "format": "RGB888"}, lores={
-                                                    "size": lsize, "format": "YUV420"})
+video_config = picam2.create_video_configuration(
+    main={"size": (1920, 1080), "format": "RGB888"},
+    lores={"size": lsize, "format": "YUV420"},
+)
 picam2.configure(video_config)
 picam2.start_preview()
 encoder = H264Encoder(2000000, repeat=True)
@@ -34,7 +36,7 @@ ltime = 0
 
 while True:
     cur = picam2.capture_buffer("lores")
-    cur = cur[:w * h].reshape(h, w)
+    cur = cur[: w * h].reshape(h, w)
     if prev is not None:
         # Measure pixels differences between current and
         # previous frame
@@ -52,7 +54,9 @@ while True:
                 encoder.output.stop()
                 encoding = False
                 time.sleep(1)
-                os.system(f"ffmpeg -r {frame_rate} -i ./captures/{filename}.h264 -vcodec copy {os.getenv('NAS_PATH')}{filename}.mp4")
+                os.system(
+                    f"ffmpeg -r {frame_rate} -i ./captures/{filename}.h264 -vcodec copy {os.getenv('NAS_PATH')}{filename}.mp4"
+                )
                 os.system(f"rm ./captures/{filename}.h264")
     prev = cur
 

@@ -153,6 +153,7 @@ dmypy.json
 cython_debug/
 
 # Mechaneyes
+/captures
 /temp
 notes.md
 .DS_Store

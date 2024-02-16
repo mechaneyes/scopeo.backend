@@ -12,7 +12,7 @@ nas_path = f"{os.getenv('NAS_PATH')}/stills"
 # Create the folder if it doesn't exist
 os.makedirs(nas_path, exist_ok=True)
 
-time_format = "%Y-%m-%d_%H-%M-%S"
+time_format = "%Y-%m-%d %H.%M.%S.%f"
 photos_per_second = 5
 photo_interval = 1.0 / photos_per_second
 
@@ -36,11 +36,11 @@ counter = 1
 
 def save_image(image, filename):
     filename_with_path = f"{nas_path}/{filename}.jpg"
-    cv2.imwrite(filename_with_path, image)  # Save using OpenCV
+    cv2.imwrite(filename_with_path, image)
 
 def save_image_local(image, filename):
     filename_with_path = f"./captures/{filename}.jpg"
-    cv2.imwrite(filename_with_path, image)  # Save using OpenCV
+    cv2.imwrite(filename_with_path, image)
 
 while True:
     cur = picam2.capture_buffer("lores")
@@ -53,16 +53,17 @@ while True:
                 capturing = True
                 print(datetime.now(),"Motion detected", mse)
             ltime = time.time()
-        elif capturing and (time.time() - ltime > 5.0):
+        elif capturing and (time.time() - ltime > 1.5):
             capturing = False
             counter = 0
-            print("Motion stopped")
+            print("Motion stopped\n")
         
         # If motion is ongoing, take photos
         if capturing:
             main_image = picam2.capture_array("main")
             counter_str = str(counter).zfill(3)
-            timestamp = datetime.now().strftime(time_format) + "_" + counter_str
+            timestamp = datetime.now().strftime(time_format)
+            # timestamp = datetime.now()
             save_image_local(main_image, timestamp)
             save_image(main_image, timestamp)
             time.sleep(photo_interval)

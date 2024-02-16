@@ -12,7 +12,7 @@ from picamera2.outputs import CircularOutput
 load_dotenv()
 os.getenv("NAS_PATH")
 
-time_format = "%Y-%m-%d-%H-%M-%S"
+time_format = "%Y-%m-%d_%H-%M-%S"
 frame_rate = 30
 
 lsize = (320, 240)

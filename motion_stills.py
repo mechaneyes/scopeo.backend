@@ -34,7 +34,7 @@ ltime = 0
 
 counter = 1
 
-def save_image(image, filename):
+def save_image_nas(image, filename):
     filename_with_path = f"{nas_path}/{filename}.jpg"
     cv2.imwrite(filename_with_path, image)
 
@@ -65,7 +65,7 @@ while True:
             timestamp = datetime.now().strftime(time_format)
             # timestamp = datetime.now()
             save_image_local(main_image, timestamp)
-            save_image(main_image, timestamp)
+            save_image_nas(main_image, timestamp)
             time.sleep(photo_interval)
             counter += 1
     else:

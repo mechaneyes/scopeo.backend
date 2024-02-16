@@ -13,13 +13,14 @@ nas_path = f"{os.getenv('NAS_PATH')}/stills"
 os.makedirs(nas_path, exist_ok=True)
 
 time_format = "%Y-%m-%d_%H-%M-%S"
-photos_per_second = 8
+photos_per_second = 5
 photo_interval = 1.0 / photos_per_second
 
-lsize = (320, 240)
+lsize = (800, 600)
 picam2 = Picamera2()
+picam2.resolution = (4056, 3040)
 video_config = picam2.create_video_configuration(
-    main={"size": (1920, 1080), "format": "XRGB8888"},
+    # main={"size": (1920, 1080), "format": "XRGB8888"},
     lores={"size": lsize, "format": "YUV420"}
 )
 picam2.configure(video_config)
@@ -50,10 +51,11 @@ while True:
         if mse > 7:
             if not capturing:
                 capturing = True
-                print("Motion detected", mse)
+                print(datetime.now(),"Motion detected", mse)
             ltime = time.time()
         elif capturing and (time.time() - ltime > 5.0):
             capturing = False
+            counter = 0
             print("Motion stopped")
         
         # If motion is ongoing, take photos

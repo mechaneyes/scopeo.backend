@@ -27,3 +27,6 @@ def prune_extra_stills(directory):
 
 path = os.path.join('captures', 'pruning')
 prune_extra_stills(path)
+
+def test_function_call():
+    print("Testing function call")

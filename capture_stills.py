@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 import numpy as np
 from picamera2 import Picamera2
-import cv2  # If using OpenCV to save images
+import cv2
+from prune_extra_stills import test_function_call
 
 load_dotenv()
 nas_path = f"{os.getenv('NAS_PATH')}/stills"
@@ -51,7 +52,8 @@ while True:
         if mse > 7:
             if not capturing:
                 capturing = True
-                print(datetime.now(),"Motion detected", mse)
+                print(datetime.now(),"Motion detected")
+                # test_function_call()
             ltime = time.time()
         elif capturing and (time.time() - ltime > 1.5):
             capturing = False
@@ -68,6 +70,7 @@ while True:
             save_image_nas(main_image, timestamp)
             time.sleep(photo_interval)
             counter += 1
+            
     else:
         counter = 0
         time.sleep(photo_interval)
